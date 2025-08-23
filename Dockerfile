@@ -4,7 +4,7 @@ FROM ubuntu:24.04
 # Install packages
 RUN /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get install -y bzip2 ca-certificates clang cmake curl earlyoom jq g++ gcc git gzip lld make python3 tar xz-utils zstd zip file \
+    && apt-get install -y bzip2 ca-certificates clang cmake curl earlyoom file g++ gcc git gzip jq lld make python3 python3-pip tar xz-utils zip zstd \
     && apt-get --purge autoremove -y \
     && apt-get autoclean \
     && rm -rf /var/lib/apt/lists/*'
