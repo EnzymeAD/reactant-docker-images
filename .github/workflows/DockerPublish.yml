@@ -72,12 +72,12 @@ jobs:
 
       - name: Set Base
         run: |
-          sed -i "s/VERSION/${{matrix.os}}/g" Dockerfile
+          sed -i "s/VERSION/${{matrix.base}}/g" Dockerfile
 
       # Docker is terrible and doesn't like uppercase image names.
       - name: Lowercase image name
         run: |
-          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)_${{ matrix.os }}
+          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)_${{ matrix.base }}
           echo "IMAGE_NAME=${IMAGE_NAME}" >> "${GITHUB_ENV}"
 
       # Needed to make caching on GHA work: https://stackoverflow.com/a/73884678.
@@ -154,12 +154,12 @@ jobs:
     steps:
       - name: Set Base
         run: |
-          sed -i "s/VERSION/${{matrix.os}}/g" Dockerfile
+          sed -i "s/VERSION/${{matrix.base}}/g" Dockerfile
 
       # Docker is terrible and doesn't like uppercase image names.
       - name: Lowercase image name
         run: |
-          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)_${{ matrix.os }}
+          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)_${{ matrix.base }}
           echo "IMAGE_NAME=${IMAGE_NAME}" >> "${GITHUB_ENV}"
 
       - name: Download digests
