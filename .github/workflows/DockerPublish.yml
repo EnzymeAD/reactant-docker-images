@@ -42,6 +42,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        base:
+          - 22.04
+          - 24.04
         include:
           - platform: 'linux/amd64'
             os: 'ubuntu-latest'
@@ -67,10 +70,14 @@ jobs:
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> "${GITHUB_ENV}"
 
+      - name: Set Base
+        run: |
+          sed -i "s/VERSION/${{matrix.os}}/g" Dockerfile
+
       # Docker is terrible and doesn't like uppercase image names.
       - name: Lowercase image name
         run: |
-          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)
+          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)_${{ matrix.os }}
           echo "IMAGE_NAME=${IMAGE_NAME}" >> "${GITHUB_ENV}"
 
       # Needed to make caching on GHA work: https://stackoverflow.com/a/73884678.
@@ -128,6 +135,12 @@ jobs:
 
   merge:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        base:
+          - 22.04
+          - 24.04
     permissions:
       contents: read
       packages: write
@@ -139,11 +152,14 @@ jobs:
     needs:
       - build
     steps:
+      - name: Set Base
+        run: |
+          sed -i "s/VERSION/${{matrix.os}}/g" Dockerfile
 
       # Docker is terrible and doesn't like uppercase image names.
       - name: Lowercase image name
         run: |
-          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)
+          IMAGE_NAME=$(echo ${IMAGE_NAME} | tr A-Z a-z)_${{ matrix.os }}
           echo "IMAGE_NAME=${IMAGE_NAME}" >> "${GITHUB_ENV}"
 
       - name: Download digests
