@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ubuntu:24.04
+FROM ubuntu:VERSION
 
 # Install packages
 RUN /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive \
