@@ -152,9 +152,6 @@ jobs:
     needs:
       - build
     steps:
-      - name: Set Base
-        run: |
-          sed -i "s/VERSION/${{matrix.base}}/g" Dockerfile
 
       # Docker is terrible and doesn't like uppercase image names.
       - name: Lowercase image name
